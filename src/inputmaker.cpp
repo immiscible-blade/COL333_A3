@@ -25,14 +25,15 @@ inputmaker::inputmaker(std::string filename, std::string outfile):outfile(outfil
     aout.open(outfile, std::ios::app);
 }
 
-// inputmaker::~inputmaker()
-// {
-// }
+inputmaker::~inputmaker()
+{
+    free(graph);
+}
 // myfile.open("example.txt", ios::app)
 void inputmaker::initialize_cnf()
 {
     aout << "c Hi There its a comment\n";
-    aout << "p cnf " << (2*graphsize + ((graphsize)*(graphsize-1))/2 + (graphsize-1)*(graphsize-k1) + (graphsize-1)*(graphsize - k2)) << " " << 3*((graphsize-1)*(graphsize-2))/2 + graphsize + 2*graphsize*(graphsize-k1) + graphsize - 3*(graphsize-k1) - 1 + 2*graphsize*(graphsize-k2) + graphsize - 3*(graphsize-k2) - 1 << "\n";
+    aout << "p cnf " << (2*graphsize + ((graphsize)*(graphsize-1))/2 + (graphsize-1)*(graphsize-k1) + (graphsize-1)*(graphsize - k2)) << " " << 3*((graphsize-1)*(graphsize))/2 + graphsize + 2*graphsize*(graphsize-k1) + graphsize - 3*(graphsize-k1) - 1 + 2*graphsize*(graphsize-k2) + graphsize - 3*(graphsize-k2) - 1 << "\n";
 }
 
 void inputmaker::make_subgraphs_clauses()
