@@ -1,6 +1,6 @@
 #include "../include/inputmaker.hpp"
 
-inputmaker::inputmaker(std::string filename)
+inputmaker::inputmaker(std::string filename, std::string outfile):outfile(outfile)
 {
     std::ifstream myfile;
     myfile.open(filename);
@@ -21,28 +21,38 @@ inputmaker::inputmaker(std::string filename)
         graph[(e1-1)*graphsize + (e2-1)] = true;
         graph[(e2-1)*graphsize + (e1-1)] = true;
     }
+    myfile.close();
+    aout.open(outfile, std::ios::app);
 }
 
 // inputmaker::~inputmaker()
 // {
 // }
 // myfile.open("example.txt", ios::app)
-void inputmaker::make_atmostk_clauses(std::string outfile, int k, int start_index)
+void inputmaker::initialize_cnf()
+{
+    aout << "c Hi There its a comment\n";
+    aout << "p cnf " << (2*graphsize + (graphsize)*(graphsize-1)/2 + (graphsize-1)*(graphsize-k1) + (graphsize-1)*(graphsize - k2)) << " " << "(no. of clauses)\n";
+}
+
+void inputmaker::make_subgraphs_clauses()
+{
+    
+}
+
+void inputmaker::make_edges_clauses()
 {
 }
 
-void initialize_cnf(std::string outfile)
-{
-}
-
-void make_subgraphs_clauses(std::string outfile)
-{
-}
-
-void make_edges_clauses(std::string outfile)
-{
-}
-
-void make_fullsubgraph_clauses(std::string outfile)
+void inputmaker::make_fullsubgraph_clauses()
 {    
+}
+
+void inputmaker::make_atmostk_clauses(int k, int start_index)
+{
+}
+
+void inputmaker::close_out()
+{
+    aout.close();
 }
