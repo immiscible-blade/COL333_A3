@@ -18,10 +18,10 @@ public:
     int k2;
     inputmaker(std::string filename, std::string outfile); // make graph
     void initialize_cnf(); // minisat initial line
-    void make_subgraphs_clauses(); // Ais and Bis
+    void make_subgraphs_clauses(); // Ais and Bis both not zero
     void make_edges_clauses(); // adjacency matrix flattened
     void make_fullsubgraph_clauses(); // connected subgraph
-    void make_atmostk_clauses(int k, int start_index); // one function called twice for both sub graph, use start_index to differentiate
+    void make_atmostk_clauses(int k, bool forwho); // true means A, false means B
     void close_out(); // close aout
     ~inputmaker();
 };

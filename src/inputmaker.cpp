@@ -37,7 +37,10 @@ void inputmaker::initialize_cnf()
 
 void inputmaker::make_subgraphs_clauses()
 {
-
+    for (int i = 1; i < graphsize+1; i++)
+    {
+        aout << i << " " << i+graphsize << '\n';
+    }
 }
 
 void inputmaker::make_edges_clauses()
@@ -61,11 +64,26 @@ void inputmaker::make_edges_clauses()
 }
 
 void inputmaker::make_fullsubgraph_clauses()
-{    
+{
+    for (int i = 1; i < graphsize+1; i++)
+    {
+        for (int j = 1; j < i; j++)
+        {
+            aout << i << " " << j << " " << 2*graphsize + j + (i-1)*(i-2)/2 << " 0\n";
+        }
+    }
+    for (int i = 1; i < graphsize+1; i++)
+    {
+        for (int j = 1; j < i; j++)
+        {
+            aout << i+graphsize << " " << j+graphsize << " " << 2*graphsize + j + (i-1)*(i-2)/2 << " 0\n";
+        }
+    }
 }
 
-void inputmaker::make_atmostk_clauses(int k, int start_index)
+void inputmaker::make_atmostk_clauses(int k, bool forwho)
 {
+
 }
 
 void inputmaker::close_out()
