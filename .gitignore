@@ -1,0 +1,5 @@
+bin/
+test.graph
+test.mapping
+test.satinput
+test.satoutput

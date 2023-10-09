@@ -39,11 +39,19 @@ void outputmaker(std::string graphfile, std::string satfile, std::string outfile
     for(int i = 0; i < n; i++)
     {
         sat >> t;
-        if (c < k1)
+        if (c < k1-1)
         {
             if (t < 0)
             {
                 aout << -t << " ";
+                c++;
+            }
+        }
+        else if(c == k1-1)
+        {
+            if (t < 0)
+            {
+                aout << -t;
                 c++;
             }
         }
@@ -53,7 +61,7 @@ void outputmaker(std::string graphfile, std::string satfile, std::string outfile
     for (int i = 0; i < n; i++)
     {
         sat >> t;
-        if(c < k2)
+        if(c < k2-1)
         {
             if (t < 0)
             {
@@ -61,8 +69,15 @@ void outputmaker(std::string graphfile, std::string satfile, std::string outfile
                 c++;
             }
         }
+        else if(c == k2-1)
+        {
+            if (t < 0)
+            {
+                aout << -t - n;
+                c++;
+            }
+        }
     }
-    aout << std::endl;
     aout.close();
     sat.close();
     std::cout << "DONE" << std::endl;
