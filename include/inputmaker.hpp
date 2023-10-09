@@ -24,6 +24,8 @@ public:
     int x(int i, int j);
     int r_a(int i, int j);
     int r_b(int i, int j);
+    int r_a2(int i, int j);
+    int r_b2(int i, int j);
     inputmaker(std::string filename, std::string outfile); // make graph
     void initialize_cnf(); // minisat initial line
     void make_subgraphs_clauses(); // Ais and Bis both not zero

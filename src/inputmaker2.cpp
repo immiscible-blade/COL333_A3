@@ -65,18 +65,18 @@ int inputmaker::r_b(int i, int j){
     return 2*n + (n*(n-1))/2 + (n-1)*(n-k1) + (i-1)*(n-k2) + j;
 }
 
+int inputmaker::r_a2(int i, int j){
+    return 2*n + (n*(n-1))/2 + (n-1)*(n-k1) + (n-1)*(n-k2) + (i-1)*(n-k1) + j;
+}
+
+int inputmaker::r_b2(int i, int j){
+    return 2*n + (n*(n-1))/2 + (n-1)*(n-k1) + (n-1)*(n-k2) + (n-1)*(n-k1) + (i-1)*(n-k2) + j;
+}
+
 void inputmaker::make_clauses(){
     
-    // Ai v Bi
-    int count = 0;
-    for (int i = 1; i < n+1; i++){
-        aout << a(i) << " " << b(i) << " " << 0 << endl;
-        count++;
-    }
-    cout << count << endl;
-    
-    
     // Xij
+    int count = 0;
     for (int i = 1; i < n+1; i++){
         for (int j = 1; j < i; j++){
             if (graph[i-1][j-1]) aout << x(i, j) << " " << 0 << endl;
@@ -84,6 +84,13 @@ void inputmaker::make_clauses(){
             else aout << "-" << x(i, j) << " " << 0 << endl;
             count++;
         }
+    }
+    cout << count << endl;
+    
+    // Ai v Bi
+    for (int i = 1; i < n+1; i++){
+        aout << a(i) << " " << b(i) << " " << 0 << endl;
+        count++;
     }
     cout << count << endl;
     
@@ -101,23 +108,11 @@ void inputmaker::make_clauses(){
     
     for (int i = 1; i < n; i++){
         aout << "-" << a(i) << " " << r_a(i, 1) << " " << 0 << endl;
-        aout << "-" << b(i) << " " << r_b(i, 1) << " " << 0 << endl;
-        count += 2;
-    }
-    cout << count << endl;
-    //
-    for (int j = 2; j < (n-k1)+1; j++){
-        aout << "-" << r_a(1, j) << " " << 0 << endl;
-        count++;
+        // aout << "-" << b(i) << " " << r_b(i, 1) << " " << 0 << endl;
+        count += 1;
     }
     cout << count << endl;
     
-    for (int j = 2; j < (n-k2)+1; j++){
-        aout << "-" << r_b(1, j) << " " << 0 << endl;
-        count++;
-    }
-    cout << count << endl;
-    //
     for (int i = 2; i < n; i++){
         for (int j = 1; j < (n-k1)+1; j++){
             aout << "-" << r_a(i-1, j) << " " << r_a(i, j) << " " << 0 << endl;
@@ -133,6 +128,34 @@ void inputmaker::make_clauses(){
         }
     }
     cout << count << endl;
+    
+    //
+    for (int j = 2; j < (n-k1)+1; j++){
+        aout << "-" << r_a(1, j) << " " << 0 << endl;
+        count++;
+    }
+    cout << count << endl;
+    
+    for (int i = 2; i < n+1; i++){
+        aout << "-" << a(i) << " -" << r_a(i-1, n-k1) << " " << 0 << endl;
+        // aout << "-" << b(i) << " -" << r_b(i-1, n-k2) << " " << 0 << endl;
+        count+=1;
+    }
+    cout << count << endl;
+    
+    for (int i = 1; i < n; i++){
+        aout << "-" << b(i) << " " << r_b(i, 1) << " " << 0 << endl;
+        // aout << "-" << b(i) << " " << r_b(i, 1) << " " << 0 << endl;
+        count += 1;
+    }
+    cout << count << endl;
+    
+    for (int j = 2; j < (n-k2)+1; j++){
+        aout << "-" << r_b(1, j) << " " << 0 << endl;
+        count++;
+    }
+    cout << count << endl;
+    //
     
     for (int i = 2; i < n; i++){
         for (int j = 1; j < (n-k2)+1; j++){
@@ -150,10 +173,87 @@ void inputmaker::make_clauses(){
     }cout << count << endl;
     
     for (int i = 2; i < n+1; i++){
-        aout << "-" << a(i) << " -" << r_a(i-1, n-k1) << " " << 0 << endl;
+        // aout << "-" << a(i) << " -" << r_a(i-1, n-k1) << " " << 0 << endl;
         aout << "-" << b(i) << " -" << r_b(i-1, n-k2) << " " << 0 << endl;
-        count+=2;
+        count+=1;
     }
     cout << count << endl;
+    
+    // atleast
+    
+    for (int i = 1; i < n; i++){
+        aout << a(i) << " " << r_a2(i, 1) << " " << 0 << endl;
+        // aout << "-" << b(i) << " " << r_b(i, 1) << " " << 0 << endl;
+        count += 1;
+    }
+    cout << count << endl;
+    
+    for (int i = 2; i < n; i++){
+        for (int j = 1; j < k1+1; j++){
+            aout << "-" << r_a2(i-1, j) << " " << r_a2(i, j) << " " << 0 << endl;
+            count++;
+        }
+    }
+    cout << count << endl;
+    
+    for (int i = 2; i < n; i++){
+        for (int j = 2; j < k1+1; j++){
+            aout << a(i) << " -" << r_a2(i-1, j-1) << " " << r_a2(i, j) << " " << 0 << endl;
+            count++;
+        }
+    }
+    cout << count << endl;
+    
+    //
+    for (int j = 2; j < k1+1; j++){
+        aout << "-" << r_a2(1, j) << " " << 0 << endl;
+        count++;
+    }
+    cout << count << endl;
+    
+    for (int i = 2; i < n+1; i++){
+        aout << a(i) << " -" << r_a2(i-1, k1) << " " << 0 << endl;
+        // aout << "-" << b(i) << " -" << r_b(i-1, n-k2) << " " << 0 << endl;
+        count+=1;
+    }
+    cout << count << endl;
+    
+    for (int i = 1; i < n; i++){
+        aout << b(i) << " " << r_b2(i, 1) << " " << 0 << endl;
+        // aout << "-" << b(i) << " " << r_b(i, 1) << " " << 0 << endl;
+        count += 1;
+    }
+    cout << count << endl;
+    
+    for (int j = 2; j < k2+1; j++){
+        aout << "-" << r_b2(1, j) << " " << 0 << endl;
+        count++;
+    }
+    cout << count << endl;
+    //
+    
+    for (int i = 2; i < n; i++){
+        for (int j = 1; j < k2+1; j++){
+            aout << "-" << r_b2(i-1, j) << " " << r_b2(i, j) << " " << 0 << endl;
+            count++;
+        }
+    }
+    cout << count << endl;
+    
+    for (int i = 2; i < n; i++){
+        for (int j = 2; j < k2+1; j++){
+            aout << b(i) << " -" << r_b2(i-1, j-1) << " " << r_b2(i, j) << " " << 0 << endl;
+            count++;
+        }
+    }cout << count << endl;
+    
+    for (int i = 2; i < n+1; i++){
+        // aout << "-" << a(i) << " -" << r_a(i-1, n-k1) << " " << 0 << endl;
+        aout << b(i) << " -" << r_b2(i-1, k2) << " " << 0 << endl;
+        count+=1;
+    }
+    cout << count << endl;
+    
+    
 }
 
