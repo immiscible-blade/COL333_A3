@@ -57,7 +57,7 @@ void outputmaker(std::string graphfile, std::string satfile, std::string outfile
         {
             if (t < 0)
             {
-                aout << -t << " ";
+                aout << -t - n<< " ";
                 c++;
             }
         }

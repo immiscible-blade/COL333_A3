@@ -8,28 +8,32 @@ inputmaker::inputmaker(std::string filename, std::string outfile)
     int m;
     myfile >> graphsize >> m >> k1 >> k2;
     n = graphsize;
-    graph = (bool*)malloc((graphsize*graphsize) * sizeof(bool));
+    // graph = (bool*)malloc((graphsize*graphsize) * sizeof(bool));
+    vector<vector<bool>> new_graph(n, vector<bool>(n, false));
+    graph = new_graph;
     
-    for (int i = 0; i < graphsize; i++){
-        for (int j = 0; j < graphsize; j++){
-            graph[i*graphsize + j] = false;
-        }
-    }
+    // for (int i = 0; i < graphsize; i++){
+    //     for (int j = 0; j < graphsize; j++){
+    //         graph[i*graphsize + j] = false;
+    //     }
+    // }
     
     int e1, e2;
     for (int i = 0; i < m; i++){
         myfile >> e1 >> e2;
-        graph[(e1-1)*graphsize + (e2-1)] = true;
-        graph[(e2-1)*graphsize + (e1-1)] = true;
+        // graph[(e1-1)*graphsize + (e2-1)] = true;
+        // graph[(e2-1)*graphsize + (e1-1)] = true;
+        graph[e1-1][e2-1] = true;
+        graph[e2-1][e1-1] = true;
     }
     
     myfile.close();
     aout.open(outfile);
 }
 
-inputmaker::~inputmaker(){
-    free(graph);
-}
+// inputmaker::~inputmaker(){
+//     free(graph);
+// }
 
 void inputmaker::initialize_cnf(){
     std::cout << "graphsize: " << graphsize << std::endl;
@@ -75,7 +79,8 @@ void inputmaker::make_clauses(){
     // Xij
     for (int i = 1; i < n+1; i++){
         for (int j = 1; j < i; j++){
-            if (graph[n*(i-1) + (j-1)]) aout << x(i, j) << " " << 0 << endl;
+            if (graph[i-1][j-1]) aout << x(i, j) << " " << 0 << endl;
+            // if (graph[n*(i-1) + (j-1)]) aout << x(i, j) << " " << 0 << endl;
             else aout << "-" << x(i, j) << " " << 0 << endl;
             count++;
         }
@@ -100,7 +105,7 @@ void inputmaker::make_clauses(){
         count += 2;
     }
     cout << count << endl;
-    
+    //
     for (int j = 2; j < (n-k1)+1; j++){
         aout << "-" << r_a(1, j) << " " << 0 << endl;
         count++;
@@ -112,7 +117,7 @@ void inputmaker::make_clauses(){
         count++;
     }
     cout << count << endl;
-    
+    //
     for (int i = 2; i < n; i++){
         for (int j = 1; j < (n-k1)+1; j++){
             aout << "-" << r_a(i-1, j) << " " << r_a(i, j) << " " << 0 << endl;
@@ -145,8 +150,8 @@ void inputmaker::make_clauses(){
     }cout << count << endl;
     
     for (int i = 2; i < n+1; i++){
-        aout << "-" << a(i) << " " << r_a(i-1, n-k1) << " " << 0 << endl;
-        aout << "-" << b(i) << " " << r_b(i-1, n-k2) << " " << 0 << endl;
+        aout << "-" << a(i) << " -" << r_a(i-1, n-k1) << " " << 0 << endl;
+        aout << "-" << b(i) << " -" << r_b(i-1, n-k2) << " " << 0 << endl;
         count+=2;
     }
     cout << count << endl;

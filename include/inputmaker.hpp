@@ -6,11 +6,14 @@
 #include <fstream>
 #include <string>
 
+using namespace std;
+
 class inputmaker
 {
 private:
     std::ofstream aout;
-    bool* graph; // use as graph[i*graphsize + j]
+    // bool* graph; // use as graph[i*graphsize + j]
+    vector<vector<bool>> graph;
 public:
     int graphsize;
     int n;

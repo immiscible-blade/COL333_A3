@@ -12,5 +12,5 @@ int main(int argc, char** argv)
     // A->close_out();
     A->make_clauses();
     
-    delete A;
+    // delete A;
 }
