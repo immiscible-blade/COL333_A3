@@ -1,6 +1,6 @@
 #include "../include/inputmaker.hpp"
 
-inputmaker::inputmaker(std::string filename, std::string outfile):outfile(outfile)
+inputmaker::inputmaker(std::string filename, std::string outfile)
 {
     std::ifstream myfile;
     myfile.open(filename);
@@ -22,7 +22,7 @@ inputmaker::inputmaker(std::string filename, std::string outfile):outfile(outfil
         graph[(e2-1)*graphsize + (e1-1)] = true;
     }
     myfile.close();
-    aout.open(outfile, std::ios::app);
+    aout.open(outfile);
 }
 
 inputmaker::~inputmaker()
@@ -32,15 +32,19 @@ inputmaker::~inputmaker()
 // myfile.open("example.txt", ios::app)
 void inputmaker::initialize_cnf()
 {
-    aout << "c Hi There its a comment\n";
-    aout << "p cnf " << (2*graphsize + ((graphsize)*(graphsize-1))/2 + (graphsize-1)*(graphsize-k1) + (graphsize-1)*(graphsize - k2)) << " " << 3*((graphsize-1)*(graphsize))/2 + graphsize + 2*graphsize*(graphsize-k1) + graphsize - 3*(graphsize-k1) - 1 + 2*graphsize*(graphsize-k2) + graphsize - 3*(graphsize-k2) - 1 << "\n";
+    std::cout << "graphsize: " << graphsize << std::endl;
+    std::cout << "k1: " << k1 << std::endl;
+    std::cout << "k2: " << k2 << std::endl;
+    std::cout << (2*graphsize + ((graphsize)*(graphsize-1))/2 + (graphsize-1)*(graphsize-k1) + (graphsize-1)*(graphsize - k2)) << std::endl;
+    aout << "c Hi There its a comment" << std::endl;
+    aout << "p cnf " << (2*graphsize + ((graphsize)*(graphsize-1))/2 + (graphsize-1)*(graphsize-k1) + (graphsize-1)*(graphsize - k2)) << " " << 3*((graphsize-1)*(graphsize))/2 + graphsize + 2*graphsize*(graphsize-k1) + graphsize - 3*(graphsize-k1) - 1 + 2*graphsize*(graphsize-k2) + graphsize - 3*(graphsize-k2) - 1 << "" << std::endl;
 }
 
 void inputmaker::make_subgraphs_clauses()
 {
     for (int i = 1; i < graphsize+1; i++)
     {
-        aout << i << " " << i+graphsize << " 0\n";
+        aout << i << " " << i+graphsize << " 0" << std::endl;
     }
 }
 
@@ -53,11 +57,11 @@ void inputmaker::make_edges_clauses()
         {
             if (graph[i*graphsize+j])
             {
-                aout << ij << " 0\n";
+                aout << ij << " 0" << std::endl;
             }
             else
             {
-                aout << -ij << " 0\n";
+                aout << -ij << " 0" << std::endl;
             }
             ij++;
         }
@@ -70,14 +74,14 @@ void inputmaker::make_fullsubgraph_clauses()
     {
         for (int j = 1; j < i; j++)
         {
-            aout << i << " " << j << " " << 2*graphsize + j + ((i-1)*(i-2))/2 << " 0\n";
+            aout << i << " " << j << " " << 2*graphsize + j + ((i-1)*(i-2))/2 << " 0" << std::endl;
         }
     }
     for (int i = 1; i < graphsize+1; i++)
     {
         for (int j = 1; j < i; j++)
         {
-            aout << i+graphsize << " " << j+graphsize << " " << 2*graphsize + j + ((i-1)*(i-2))/2 << " 0\n";
+            aout << i+graphsize << " " << j+graphsize << " " << 2*graphsize + j + ((i-1)*(i-2))/2 << " 0" << std::endl;
         }
     }
 }
@@ -102,7 +106,7 @@ void inputmaker::make_atmostk_clauses(int k, bool forwho)
     int temp_sAB = startAB;
     for (int i = 0; i < graphsize-1; i++)
     {
-        aout << -temp_sAB << " " << temp_index << " 0\n";
+        aout << -temp_sAB << " " << temp_index << " 0" << std::endl;
         temp_sAB++;
         temp_index += k;
     }
@@ -112,7 +116,7 @@ void inputmaker::make_atmostk_clauses(int k, bool forwho)
     temp_sAB = startAB;
     for (int i = 1; i < k; i++)
     {
-        aout << -temp_index << " 0\n";
+        aout << -temp_index << " 0" << std::endl;
         temp_index++;
     }
 
@@ -121,7 +125,7 @@ void inputmaker::make_atmostk_clauses(int k, bool forwho)
     {
         for (int j = 0; j < k; j++)
         {
-            aout << -temp_index << " " << temp_index+k << " 0\n";
+            aout << -temp_index << " " << temp_index+k << " 0" << std::endl;
             temp_index++;
         }
     }
@@ -132,7 +136,7 @@ void inputmaker::make_atmostk_clauses(int k, bool forwho)
     {
         for (int j = 1; j < k; j++)
         {
-            aout << -temp_sAB << " " << -temp_index << " " << temp_index + k << " 0\n";
+            aout << -temp_sAB << " " << -temp_index << " " << temp_index + k << " 0" << std::endl;
             temp_index++;
         }
         temp_sAB++;
@@ -142,7 +146,7 @@ void inputmaker::make_atmostk_clauses(int k, bool forwho)
     temp_sAB = startAB+1;
     for (int i = 1; i < graphsize; i++)
     {
-        aout << -temp_sAB << " " << -temp_index << " 0\n";
+        aout << -temp_sAB << " " << -temp_index << " 0" << std::endl;
         temp_index += k;
         temp_sAB++;
     }

@@ -9,7 +9,6 @@
 class inputmaker
 {
 private:
-    std::string outfile;
     std::ofstream aout;
     bool* graph; // use as graph[i*graphsize + j]
 public:

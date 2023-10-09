@@ -9,8 +9,12 @@
 class outputmaker
 {
 private:
-    /* data */
+    std::string outfile;
+    std::ofstream aout;
 public:
+    int graphsize;
+    int k1;
+    int k2;
     outputmaker(/* args */);
     ~outputmaker();
 };
