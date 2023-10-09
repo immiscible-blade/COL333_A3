@@ -1,1 +1,1 @@
-./bin/orgstosat "test.graph" $1
+./bin/orgstosat "$1.graph" "$1.satinput"
