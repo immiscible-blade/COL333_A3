@@ -37,11 +37,27 @@ void inputmaker::initialize_cnf()
 
 void inputmaker::make_subgraphs_clauses()
 {
-    
+
 }
 
 void inputmaker::make_edges_clauses()
 {
+    int ij = 2*graphsize+1;
+    for (int i = 0; i < graphsize; i++)
+    {
+        for (int j = 0; j < i; j++)
+        {
+            if (graph[i*graphsize+j])
+            {
+                aout << ij << " 0\n";
+            }
+            else
+            {
+                aout << -ij << " 0\n";
+            }
+            ij++;
+        }
+    }
 }
 
 void inputmaker::make_fullsubgraph_clauses()
