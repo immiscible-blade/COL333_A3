@@ -1,1 +1,1 @@
-g++ -Wall src/inputmaker.cpp src/orgstosat.cpp -o bin/orgstosat
+g++ -Wall src/inputmaker2.cpp src/orgstosat.cpp -o bin/orgstosat
