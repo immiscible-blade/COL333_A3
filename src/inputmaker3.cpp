@@ -12,7 +12,7 @@ inputmaker::inputmaker(std::string filename, std::string outfile)
     vector<vector<bool>> new_graph(n, vector<bool>(n, false));
     graph = new_graph;
     
-    vector<vector<int>> new_adj(n);
+    vector<vector<int>> new_adj(n+1);
     adj = new_adj;
     
     // for (int i = 0; i < graphsize; i++){
