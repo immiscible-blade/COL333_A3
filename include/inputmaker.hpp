@@ -14,6 +14,7 @@ private:
     std::ofstream aout;
     // bool* graph; // use as graph[i*graphsize + j]
     vector<vector<bool>> graph;
+    vector<vector<int>> adj;
 public:
     int graphsize;
     int n;
