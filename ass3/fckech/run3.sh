@@ -15,23 +15,28 @@ m="${integers[1]}"
 
 low=0
 high="$n"
+flag="true"
 
 while [ "$low" -le "$high" ]; do
     mid=$((($low + $high) / 2))
-    ./bin/orgtosat_p2 "$mid" "$1.graph" "$1.satinput"
-    minisat "$1.satinput" "$1.satoutputtemp"
-    JUDGEMENT=$(head -n 1 "$1.satoutputtemp" | awk '{print $1}')
+    ./orgtosat_p2 "$mid" "$1.graph" "$1.satinput"
+    ./minisat "$1.satinput" "$1.satoutput"
+    JUDGEMENT=$(head -n 1 "$1.satoutput" | awk '{print $1}')
     if [ "$JUDGEMENT" == "UNSAT" ]; then
         echo "$mid is UNSAT"
         high=$((mid - 1))
     else
         echo "$mid is SAT"
-        cp "$1.satoutputtemp" "$1.satoutput"
+        ./satorgs_p2 "$1.graph" "$1.satoutput" "$1.mapping"
         low=$((mid + 1))
+        flag="false"
     fi
 done
 
-./bin/satorgs_p2 "$1.graph" "$1.satoutput" "$1.mapping"
+if [ "$flag" == "true" ]; then
+    ./satorgs_p2 "$1.graph" "$1.satoutput" "$1.mapping"
+fi
+
 # local low=0
 # local high=$((${#arr[@]} - 1))
 
